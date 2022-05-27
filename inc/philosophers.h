@@ -32,13 +32,14 @@ typedef struct s_philosophers				// структура данных филосо
 
 typedef struct s_table						// структура данных стола
 {
-	t_mutex			forks;					// все вилки на столе - mutex 
+	t_mutex			*forks;					// все вилки на столе - mutex 
     t_philosophers	philosophers;			// ссылка на структуру философов 
 	int				num;					// колл-во вилок на столе
 	int				time_die;				// через сколько философ умреть если не поест	
 	int				time_eat;				// сколько философу нужно есть по времени
 	int				time_sleep;				// сколько философу нужно спать по времени
 	int				number_of_time_to_eat;	// сколько раз должен поесть философ чтобы программа завершилась
+	t_mutex			tmp;
 } t_table;
 
 void    print_error(char *str);				// вывод ошибок

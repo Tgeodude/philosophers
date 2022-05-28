@@ -6,7 +6,7 @@
 /*   By: tgeodude <tgeodude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:44:28 by tgeodude          #+#    #+#             */
-/*   Updated: 2022/05/28 20:32:22 by tgeodude         ###   ########.fr       */
+/*   Updated: 2022/05/28 21:06:58 by tgeodude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,14 @@ typedef struct s_philosophers				// структура данных филосо
 	struct t_table	*table;
 	pthread_t		self;
 	int				id;						// id каждого философа для вывода в printf
+	t_mutex			*ab_to_wr;				// блок на то чтобы писал только один философ
+	int				times_need_to_eat;
 } t_philosophers;
 
 typedef struct s_table						// структура данных стола
 {
-	t_mutex			*forks;					// все вилки на столе - mutex 
+	t_mutex			*forks;					// все вилки на столе - mutex
+	t_mutex			ab_to_wr;				// блок на то чтобы писал только один философ
     t_philosophers	*philosophers;			// ссылка на структуру философов 
 	int				num;					// колл-во вилок на столе
 	int				time_die;				// через сколько философ умреть если не поест	

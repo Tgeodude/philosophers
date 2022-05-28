@@ -6,7 +6,7 @@
 /*   By: tgeodude <tgeodude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:44:28 by tgeodude          #+#    #+#             */
-/*   Updated: 2022/05/26 18:11:19 by tgeodude         ###   ########.fr       */
+/*   Updated: 2022/05/28 20:32:22 by tgeodude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@ typedef pthread_t		t_thread;
 
 typedef struct s_philosophers				// структура данных философов
 {
-    t_mutex left_fork;						// левая вилка каждого философа - mutex
-    t_mutex right_fork;						// правая вилка каждого философа - mutex
+    t_mutex *left_fork;						// левая вилка каждого философа - mutex
+    t_mutex *right_fork;					// правая вилка каждого философа - mutex
 	struct t_table	*table;
+	pthread_t		self;
+	int				id;						// id каждого философа для вывода в printf
 } t_philosophers;
 
 typedef struct s_table						// структура данных стола
 {
 	t_mutex			*forks;					// все вилки на столе - mutex 
-    t_philosophers	philosophers;			// ссылка на структуру философов 
+    t_philosophers	*philosophers;			// ссылка на структуру философов 
 	int				num;					// колл-во вилок на столе
 	int				time_die;				// через сколько философ умреть если не поест	
 	int				time_eat;				// сколько философу нужно есть по времени
@@ -44,5 +46,7 @@ typedef struct s_table						// структура данных стола
 
 void    print_error(char *str);				// вывод ошибок
 int		ft_atoi(const char *str);			// функция дле преобразования чисел из char в int
+void    *routine(void *philosophers);		// функция которая передается при создании потока
+
 
 #endif

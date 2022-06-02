@@ -24,15 +24,17 @@ int	mutex_init(t_table *table)
 	return (1);
 }
 
-void	create_philo(t_table *table, int i)
+int	create_philo(t_table *table, int i)
 {
 	table->philosophers[i].table = table;
+	table->philosophers[i].ab_to_wr = &table->ab_to_wr;
 	table->philosophers[i].left_fork = table->forks + i;
+	table->philosophers[i].times_need_to_eat = table->number_of_time_to_eat;
 	if (i != table->num - 1)
 		table->philosophers[i].right_fork = table->forks + i + 1;
 	else
 		table->philosophers[i].right_fork = table->forks;
-	if (pthread_create(&table->philosophers[i].self, NULL, routine, (void *)(table->philosophers) + i))
+	if (pthread_create(&table->philosophers[i].self, NULL, routine, (void *)((table->philosophers) + i)))
 		return (0);
 	return (1);
 }
@@ -48,18 +50,18 @@ int	philo_init(t_table *table)
 	i = -1;
 	while (++i, ++i < table->num)
 		create_philo(table, i);
+	return (1);
 	
 }
 
 int	main(int argc, char **argv)
 {
 	t_table table;
-	pthread_mutex_init(&(table.tmp), NULL);
 	if (argc == 5 || argc == 6)
 		parse(argc, argv, &table);
 	else
 		print_error("Incorrect input");
-	pthread_mutex_init(&(table.tmp), NULL);
+	pthread_mutex_init(&(table.ab_to_wr), NULL);
 	if (!(mutex_init(&table)))
 		print_error("Error in mutex");
 	if (!(philo_init(&table)))

@@ -6,7 +6,7 @@
 /*   By: tgeodude <tgeodude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:44:28 by tgeodude          #+#    #+#             */
-/*   Updated: 2022/05/28 21:06:58 by tgeodude         ###   ########.fr       */
+/*   Updated: 2022/05/30 19:10:07 by tgeodude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_philosophers				// структура данных филосо
 {
     t_mutex *left_fork;						// левая вилка каждого философа - mutex
     t_mutex *right_fork;					// правая вилка каждого философа - mutex
-	struct t_table	*table;
+	struct s_table	*table;
 	pthread_t		self;
 	int				id;						// id каждого философа для вывода в printf
 	t_mutex			*ab_to_wr;				// блок на то чтобы писал только один философ

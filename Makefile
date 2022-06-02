@@ -4,13 +4,14 @@ MAKE		= make
 
 #COMP USE CC INSTEAD?!?!??!
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 
 #SRC
 SRC_DIR		= src
 SRC			= $(SRC_DIR)/philosophers_main.c \
 				$(SRC_DIR)/philosophers_error_free.c \
 				$(SRC_DIR)/philosophers_utils.c \
+				$(SRC_DIR)/philosophers_routine.c \
 
 
 #INC

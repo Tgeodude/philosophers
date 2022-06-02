@@ -4,11 +4,11 @@ void    eating(t_philosophers *philosophers)
 {
     pthread_mutex_lock(philosophers->left_fork);
     pthread_mutex_lock(philosophers->ab_to_wr);
-    printf("philosopers taken fork");
+    printf("philosopers taken left fork\n");
     pthread_mutex_unlock(philosophers->ab_to_wr);
     pthread_mutex_lock(philosophers->right_fork);
     pthread_mutex_lock(philosophers->ab_to_wr);
-    printf("philosopers taken fork");
+    printf("philosopers taken write fork\n");
     pthread_mutex_unlock(philosophers->ab_to_wr);
     pthread_mutex_unlock(philosophers->left_fork);
     pthread_mutex_unlock(philosophers->right_fork);

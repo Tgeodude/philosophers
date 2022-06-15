@@ -12,6 +12,7 @@ SRC			= $(SRC_DIR)/philosophers_main.c \
 				$(SRC_DIR)/philosophers_error_free.c \
 				$(SRC_DIR)/philosophers_utils.c \
 				$(SRC_DIR)/philosophers_routine.c \
+				$(SRC_DIR)/philosophers_time.c \
 
 
 #INC

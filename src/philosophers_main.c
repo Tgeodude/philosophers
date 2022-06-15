@@ -30,6 +30,7 @@ int	create_philo(t_table *table, int i)
 	table->philosophers[i].ab_to_wr = &table->ab_to_wr;
 	table->philosophers[i].left_fork = table->forks + i;
 	table->philosophers[i].times_need_to_eat = table->number_of_time_to_eat;
+	table->philosophers[i].id = i + 1;
 	if (i != table->num - 1)
 		table->philosophers[i].right_fork = table->forks + i + 1;
 	else
@@ -43,13 +44,16 @@ int	philo_init(t_table *table)
 {
 	int	i;
 
+	gettimeofday(&table->start, NULL);
 	table->philosophers = (t_philosophers *) malloc(sizeof(t_philosophers) * table->num);
 	i = -2;
 	while (++i, ++i < table->num)
 		create_philo(table, i);
+	usleep(100);
 	i = -1;
 	while (++i, ++i < table->num)
 		create_philo(table, i);
+	usleep(100);
 	return (1);
 	
 }
@@ -57,6 +61,8 @@ int	philo_init(t_table *table)
 int	main(int argc, char **argv)
 {
 	t_table table;
+
+	memset(&table, 0, sizeof(table));
 	if (argc == 5 || argc == 6)
 		parse(argc, argv, &table);
 	else
@@ -66,4 +72,6 @@ int	main(int argc, char **argv)
 		print_error("Error in mutex");
 	if (!(philo_init(&table)))
 		print_error("Error in philo create");
+	while (1)
+		printf("");
 }

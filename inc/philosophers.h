@@ -6,7 +6,7 @@
 /*   By: tgeodude <tgeodude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:44:28 by tgeodude          #+#    #+#             */
-/*   Updated: 2022/06/07 20:12:27 by tgeodude         ###   ########.fr       */
+/*   Updated: 2022/06/18 19:26:08 by tgeodude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@ typedef pthread_t		t_thread;
 
 typedef struct s_philosophers				// структура данных философов
 {
-    t_mutex *left_fork;						// левая вилка каждого философа - mutex
-    t_mutex *right_fork;					// правая вилка каждого философа - mutex
+    t_mutex 		*left_fork;				// левая вилка каждого философа - mutex
+    t_mutex 		*right_fork;			// правая вилка каждого философа - mutex
+	t_mutex			*check;					// чек смерти философа
 	pthread_t		self;
 	int				id;						// id каждого философа для вывода в printf
 	t_mutex			*ab_to_wr;				// блок на то чтобы писал только один философ
 	int				times_need_to_eat;
 	struct timeval	last;
+	struct timeval	current_time;
 	struct s_table	*table;
-	
 } t_philosophers;
 
 typedef struct s_table						// структура данных стола
@@ -47,7 +48,9 @@ typedef struct s_table						// структура данных стола
 	int				time_sleep;				// сколько философу нужно спать по времени
 	int				number_of_time_to_eat;	// сколько раз должен поесть философ чтобы программа завершилась
 	t_mutex			tmp;
+	t_mutex			*checks;					// проверка философов на смерть
 	struct timeval	start;
+	int				done;
 	
 } t_table;
 
@@ -56,5 +59,8 @@ int		ft_atoi(const char *str);			// функция дле преобразова
 void    *routine(void *philosophers);		// функция которая передается при создании потока
 long		gettime(struct timeval start);
 void	ft_usleep(int usec);
+void	is_smd_dead(t_table *table);
+long	timeval_comp(struct timeval fst, struct timeval snd);
+void	ft_free(t_table *table);
 
 #endif

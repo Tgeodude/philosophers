@@ -42,19 +42,26 @@ int	ft_atoi(const char *str)
 	h = 0;
 	i = 1;
 	while ((*str) == ' ' || ((*str) >= '\t' && (*str) <= '\r'))
-		str++;
+		++str;
 	if ((*str) == '-' || (*str) == '+')
 	{
 		if ((*str == '-'))
 			i = -1;
-		str++;
+		++str;
 	}
 	while ((*str) >= '0' && (*str) <= '9')
 	{
 		chech_atoi_one(str, h, i);
 		check_atoi(str, h, i);
 		h = (h * 10) + ((*str) - '0');
-		str++;
+		++str;
 	}
 	return (h * i);
+}
+
+void	ft_free(t_table *table)
+{
+	free(table->checks);
+	free(table->forks);
+	free(table->philosophers);
 }

@@ -59,14 +59,14 @@ int	philo_init(t_table *table)
 		create_philo(table, i);
 		i += 2;
 	}
-	usleep(100);
+	ft_usleep(100);
 	i = 1;
 	while (i < table->num)
 	{
 		create_philo(table, i);
 		i += 2;
 	}
-	usleep(100);
+	ft_usleep(100);
 	return (1);
 	
 }

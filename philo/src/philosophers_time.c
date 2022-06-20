@@ -26,7 +26,7 @@ void	ft_usleep(int usec)
 	long	time;
 
 	time = ft_time();
-	usleep(usec * 900);
+	usleep(usec * 920);
 	while (ft_time() < time + usec)
-		usleep(usec * 10);
+		usleep(usec * 3);
 }

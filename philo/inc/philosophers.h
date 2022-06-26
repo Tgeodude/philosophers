@@ -6,7 +6,7 @@
 /*   By: tgeodude <tgeodude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:44:28 by tgeodude          #+#    #+#             */
-/*   Updated: 2022/06/18 19:26:08 by tgeodude         ###   ########.fr       */
+/*   Updated: 2022/06/26 21:34:55 by tgeodude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,41 +23,40 @@
 typedef pthread_mutex_t	t_mutex;
 typedef pthread_t		t_thread;
 
-typedef struct s_philosophers				// структура данных философов
+typedef struct s_philosophers
 {
-    t_mutex 		*left_fork;				// левая вилка каждого философа - mutex
-    t_mutex 		*right_fork;			// правая вилка каждого философа - mutex
-	t_mutex			*check;					// чек смерти философа
+	t_mutex			*left_fork;
+	t_mutex			*right_fork;
+	t_mutex			*check;
 	pthread_t		self;
-	int				id;						// id каждого философа для вывода в printf
-	t_mutex			*ab_to_wr;				// блок на то чтобы писал только один философ
+	int				id;
+	t_mutex			*ab_to_wr;
 	int				times_need_to_eat;
 	struct timeval	last;
 	struct timeval	current_time;
 	struct s_table	*table;
-} t_philosophers;
+}	t_philosophers;
 
-typedef struct s_table						// структура данных стола
+typedef struct s_table
 {
-	t_mutex			*forks;					// все вилки на столе - mutex
-	t_mutex			ab_to_wr;				// блок на то чтобы писал только один философ
-    t_philosophers	*philosophers;			// ссылка на структуру философов 
-	int				num;					// колл-во вилок на столе
-	int				time_die;				// через сколько философ умреть если не поест	
-	int				time_eat;				// сколько философу нужно есть по времени
-	int				time_sleep;				// сколько философу нужно спать по времени
-	int				number_of_time_to_eat;	// сколько раз должен поесть философ чтобы программа завершилась
+	t_mutex			*forks;
+	t_mutex			ab_to_wr;
+	t_philosophers	*philosophers;
+	int				num;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				number_of_time_to_eat;
 	t_mutex			tmp;
-	t_mutex			*checks;					// проверка философов на смерть
+	t_mutex			*checks;
 	struct timeval	start;
 	int				done;
-	
-} t_table;
+}	t_table;
 
-void    print_error(char *str);				// вывод ошибок
-int		ft_atoi(const char *str);			// функция дле преобразования чисел из char в int
-void    *routine(void *philosophers);		// функция которая передается при создании потока
-long		gettime(struct timeval start);
+void	print_error(char *str);
+int		ft_atoi(const char *str);
+void	*routine(void *philosophers);
+long	gettime(struct timeval start);
 void	ft_usleep(int usec);
 void	is_smd_dead(t_table *table);
 long	timeval_comp(struct timeval fst, struct timeval snd);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers_time.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tgeodude <tgeodude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/26 21:43:17 by tgeodude          #+#    #+#             */
+/*   Updated: 2022/06/26 21:44:13 by tgeodude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 long	gettime(struct timeval start)
@@ -5,7 +17,8 @@ long	gettime(struct timeval start)
 	struct timeval	last;
 
 	gettimeofday(&last, NULL);
-	return ((1000 * (size_t)last.tv_sec + (size_t)last.tv_usec / 1000) - (1000 * (size_t)start.tv_sec + (size_t)start.tv_usec / 1000) );
+	return ((1000 * (size_t)last.tv_sec + (size_t)last.tv_usec / 1000) \
+	- (1000 * (size_t)start.tv_sec + (size_t)start.tv_usec / 1000));
 }
 
 long	ft_time(void)

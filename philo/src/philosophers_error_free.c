@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers_error_free.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tgeodude <tgeodude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/26 21:44:47 by tgeodude          #+#    #+#             */
+/*   Updated: 2022/06/26 21:45:10 by tgeodude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
-void    print_error(char *str)
+void	print_error(char *str)
 {
-    printf("%s", str);
-    exit(0);
+	printf("%s", str);
+	exit(0);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers_main.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tgeodude <tgeodude@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/26 21:35:37 by tgeodude          #+#    #+#             */
+/*   Updated: 2022/06/26 21:37:26 by tgeodude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	parse(int argc, char **argv, t_table *table)
@@ -19,12 +31,13 @@ int	mutex_init(t_table *table)
 	table->forks = (t_mutex *)malloc(sizeof(t_mutex) * table->num);
 	if (!table->forks)
 		return (0);
-	table->checks = (t_mutex *)malloc(sizeof(t_mutex)* table->num);
+	table->checks = (t_mutex *)malloc(sizeof(t_mutex) * table->num);
 	if (!table->checks)
 		return (0);
 	i = -1;
 	while (++i < table->num)
-		if (pthread_mutex_init(table->forks + i, NULL) || pthread_mutex_init(table->checks + i, NULL))
+		if (pthread_mutex_init(table->forks + i, NULL) || \
+		pthread_mutex_init(table->checks + i, NULL))
 			return (0);
 	return (1);
 }
@@ -42,7 +55,8 @@ int	create_philo(t_table *table, int i)
 		table->philosophers[i].right_fork = table->forks + i + 1;
 	else
 		table->philosophers[i].right_fork = table->forks;
-	if (pthread_create(&table->philosophers[i].self, NULL, routine, (void *)((table->philosophers) + i)))
+	if (pthread_create(&table->philosophers[i].self, NULL, \
+	routine, (void *)((table->philosophers) + i)))
 		return (0);
 	pthread_detach(table->philosophers[i].self);
 	return (1);
@@ -53,7 +67,8 @@ int	philo_init(t_table *table)
 	int	i;
 
 	gettimeofday(&table->start, NULL);
-	table->philosophers = (t_philosophers *) malloc(sizeof(t_philosophers) * table->num);
+	table->philosophers = (t_philosophers *)malloc(sizeof(t_philosophers) \
+	* table->num);
 	i = 0;
 	while (i < table->num)
 	{
@@ -69,12 +84,11 @@ int	philo_init(t_table *table)
 	}
 	ft_usleep(100);
 	return (1);
-	
 }
 
 int	main(int argc, char **argv)
 {
-	t_table table;
+	t_table	table;
 
 	memset(&table, 0, sizeof(table));
 	if (argc == 5 || argc == 6)

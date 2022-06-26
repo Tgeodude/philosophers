@@ -46,7 +46,10 @@ void is_smd_dead(t_table *table)
 			break ;
 		}
 		if (table->done == table->num)
+		{
+			pthread_mutex_lock(&(table->ab_to_wr));
 			break ;
+		}
 		pthread_mutex_unlock(table->philosophers[i].check);
 		i = (i + 1) % table->num;
 	}

@@ -44,6 +44,7 @@ int	create_philo(t_table *table, int i)
 		table->philosophers[i].right_fork = table->forks;
 	if (pthread_create(&table->philosophers[i].self, NULL, routine, (void *)((table->philosophers) + i)))
 		return (0);
+	pthread_detach(table->philosophers[i].self);
 	return (1);
 }
 

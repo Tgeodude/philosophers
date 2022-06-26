@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 int	philo_life(t_ph *philo, t_all *g_all)
 {
@@ -10,11 +10,6 @@ int	philo_life(t_ph *philo, t_all *g_all)
 	philo->last = get_time();
 	usleep(g_all->t_eat * 1000);
 	philo->n_eat++;
-	if (philo->n_eat == g_all->c_eat)
-	{
-		sem_wait(g_all->check);
-		exit(1);
-	}
 	sem_post(g_all->fork);
 	sem_post(g_all->fork);
 	philo_print("is sleeping", philo->number, 1, g_all);
@@ -29,25 +24,38 @@ void	*philo_checker(void	*arg)
 
 	philo = (t_ph *)arg;
 	usleep(5);
-	while (1)
+	while (1 && !philo->died)
 	{
-		usleep(1000);
 		if ((unsigned long)philo->t_die < (get_time() - philo->last))
+		{
+			sem_wait(philo->g_all->check);
 			philo_print("\033[0;31m\033[1mdied \033[0m", philo->number , 0, philo->g_all);
+			philo->died = 1;
+			break ;
+		}
+		if (philo->n_eat >= philo->g_all->c_eat && philo->g_all->c_eat != -1)
+		{
+			philo->died = 1;
+			sem_wait(philo->g_all->check);
+			break ;
+		}
 	}
 	return (arg);
 }
 
-void	philo_routine(t_ph *philo)
+void	philo_routine(t_ph *philo, t_all *g_all)
 {
 	if (philo->number % 2 == 0)
-		usleep(1000);
+		usleep(100);
 	philo->last = get_time();
 	if (pthread_create(&philo->checker, NULL, philo_checker, philo))
 		return ;
+	while (!(philo->died))
+		philo_life(philo, g_all);
 	pthread_detach(philo->checker);
-	while (philo_life(philo, philo->g_all))
-		;
+	if (philo->died)
+		exit(1);
+	exit(0);
 }
 
 int philo_start(int i, t_all *g_all)
@@ -60,8 +68,10 @@ int philo_start(int i, t_all *g_all)
 		g_all->philo[i].n_eat = 0;
 		g_all->philo[i].t_die = g_all->t_die;
 		g_all->philo[i].g_all = g_all;
+		g_all->philo[i].died = 0;
 	}
 	g_all->start = get_time();
+	g_all->count_eat = 0;
 	i = -1;
 	while (++i < g_all->num)
 	{
@@ -69,7 +79,7 @@ int philo_start(int i, t_all *g_all)
 		if (g_all->philo[i].pid == -1)
 			return (write(2, "Error with fork\n", 16) - 15);
 		if (g_all->philo[i].pid == 0)
-			philo_routine(&(g_all->philo[i]));
+			philo_routine(&(g_all->philo[i]), g_all);
 	}
 	i = -1;
 	while (1)
@@ -82,7 +92,7 @@ int philo_start(int i, t_all *g_all)
 }
 
 int check_init(int argc, char **argv, t_all *g_all)
-{
+{	
     g_all->num = ft_atoi(argv[1]);
     g_all->t_die = ft_atoi(argv[2]);
     g_all->t_eat = ft_atoi(argv[3]);
@@ -126,5 +136,6 @@ int main(int argc, char **argv)
 	i = -1;
 	while (++i < g_all.num && g_all.philo[i].pid)
 		kill(g_all.philo[i].pid, 9);
+	free(g_all.philo);
 	return (0);
 }

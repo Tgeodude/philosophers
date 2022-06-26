@@ -14,7 +14,7 @@ SRC			= $(SRC_DIR)/main.c \
 
 #INC
 INC_DIR		= inc
-INC			= $(INC_DIR) philosophers.h
+INC			= $(INC_DIR) philosophers_bonus.h
 
 #OBJ
 OBJ_DIR		= obj

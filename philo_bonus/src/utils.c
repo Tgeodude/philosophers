@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 void	check_atoi(const char *str, int h, int i)
 {
@@ -69,14 +69,10 @@ long get_time (void)
 
 int	philo_print(char *str, int number, int status, t_all *g_all)
 {
-	if (status == 2)
-		exit(1);
 	sem_wait(g_all->write);
-	sem_wait(g_all->check);
 	printf("%lu %d %s\n", (get_time() - g_all->start), number, str);
 	if (status == 0)
 		exit(1);
 	sem_post(g_all->write);
-	sem_post(g_all->check);
 	return (0);
 }

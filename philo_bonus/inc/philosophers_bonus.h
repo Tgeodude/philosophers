@@ -1,5 +1,5 @@
-#ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#ifndef PHILOSOPHERS_BONUS_H
+# define PHILOSOPHERS_BONUS_H
 
 #include <semaphore.h>
 #include <stdio.h>
@@ -21,6 +21,7 @@ typedef struct s_ph
 	int				n_eat;
 	int				t_die;
 	struct s_all	*g_all;
+	int				died;
 } t_ph;
 
 typedef struct s_all
@@ -36,6 +37,7 @@ typedef struct s_all
 	int				done;
 	int				id;	
 	int				num;
+	int				count_eat;
 	t_ph			*philo;
 } t_all;
 

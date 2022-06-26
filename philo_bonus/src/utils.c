@@ -1,65 +1,69 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tgeodude <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/26 23:59:39 by tgeodude          #+#    #+#             */
+/*   Updated: 2022/06/26 23:59:40 by tgeodude         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers_bonus.h"
-
-void	check_atoi(const char *str, int h, int i)
-{
-	if ((str[0]) == '9' && h == 214748364)
-	{
-		if (i == -1)
-		{
-			write(2, "Error\n", 6);
-			exit(0);
-		}
-	}
-	if (h > 214748364)
-	{
-		write(2, "Error\n", 6);
-		exit(0);
-	}
-	if (i != -1 && h == 214748364 && ((*str) - '0') > 7)
-	{
-		write(2, "Error\n", 6);
-		exit(0);
-	}
-}
-
-void	chech_atoi_one(const char *str, int h, int i)
-{
-	if ((str[0]) == '9' && h == 214748364)
-	{
-		if (i == -1)
-		{
-			write(2, "Error\n", 6);
-			exit(0);
-		}
-	}
-}
 
 int	ft_atoi(const char *str)
 {
-	int	i;
-	int	h;
+	unsigned long long	sum;
 
-	h = 0;
-	i = 1;
-	while ((*str) == ' ' || ((*str) >= '\t' && (*str) <= '\r'))
-		++str;
-	if ((*str) == '-' || (*str) == '+')
+	sum = 0;
+	if (*str == '+')
+		str++;
+	if (*str == '0')
+		return (0);
+	while (*str)
 	{
-		if ((*str == '-'))
-			i = -1;
-		++str;
+		if (!(*str >= '0' && *str <= '9'))
+			return (0);
+		sum = sum * 10 + *str - '0';
+		str++;
 	}
-	while ((*str) >= '0' && (*str) <= '9')
-	{
-		chech_atoi_one(str, h, i);
-		check_atoi(str, h, i);
-		h = (h * 10) + ((*str) - '0');
-		++str;
-	}
-	return (h * i);
+	if (sum > 2147483647)
+		return (-1);
+	if (sum > 2147483648)
+		return (0);
+	return ((int)sum);
 }
 
-long get_time (void)
+int	check_init(int argc, char **argv, t_all *g_all)
+{	
+	g_all->num = ft_atoi(argv[1]);
+	g_all->t_die = ft_atoi(argv[2]);
+	g_all->t_eat = ft_atoi(argv[3]);
+	g_all->t_sleep = ft_atoi(argv[4]);
+	if (argc == 5)
+		g_all->c_eat = -1;
+	else
+		g_all->c_eat = ft_atoi(argv[5]);
+	sem_unlink("fork");
+	sem_unlink("print");
+	sem_unlink("check");
+	g_all->philo = (t_ph *)malloc(sizeof(t_ph) * g_all->num);
+	if (g_all->num < 2 || g_all->t_die < 0 \
+			|| g_all->t_eat < 0 || g_all->t_sleep < 0 \
+			|| (argc == 6 && g_all->c_eat < 0) \
+			|| g_all->num > 200)
+	{
+		free(g_all->philo);
+		return (1);
+	}
+	g_all->fork = sem_open("fork", O_CREAT | O_EXCL, S_IRWXU, g_all->num);
+	g_all->write = sem_open("write", O_CREAT | O_EXCL, S_IRWXU, 1);
+	g_all->check = sem_open("check", O_CREAT | O_EXCL, S_IRWXU, 1);
+	return (0);
+}
+
+long	get_time(void)
 {
 	struct timeval	time;
 
